@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="Che_Gato.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:Che_Gato.Views"
+       Title="Che Gato"
+       FlyoutBehavior="Disabled"
+       Shell.NavBarIsVisible="False">
+
+    <!-- Módulo 1: pantalla inicial / splash. Es la ruta con la que arranca la app -->
+    <ShellContent Route="home"
+                  ContentTemplate="{DataTemplate views:HomePage}" />
+
+    <!-- Zona autenticada (Módulo 3): navegación por pestañas -->
+    <TabBar Route="main"
+            Shell.TabBarBackgroundColor="{StaticResource CatWhisker}"
+            Shell.TabBarForegroundColor="{StaticResource CatOrangeDark}"
+            Shell.TabBarUnselectedColor="{StaticResource CatGraySteel}">
+
+        <ShellContent Title="Catálogo"
+                      Route="catalog"
+                      ContentTemplate="{DataTemplate views:CatalogPage}" />
+
+        <ShellContent Title="Carrito"
+                      Route="cart"
+                      ContentTemplate="{DataTemplate views:CartPage}" />
+
+        <ShellContent Title="Perfil"
+                      Route="profile"
+                      ContentTemplate="{DataTemplate views:ProfilePage}" />
+
+    </TabBar>
+
+</Shell>

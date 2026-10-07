@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Che_Gato.Views.CatalogPage"
+             BackgroundColor="#FFF9F2"
+             Title="Menú">
+
+    <ContentPage.Resources>
+        <Color x:Key="CatOrange">#FF7B00</Color>
+        <Color x:Key="CatDark">#2C3E50</Color>
+        <Color x:Key="CatGray">#8395A7</Color>
+    </ContentPage.Resources>
+
+    <!-- Envolvemos todo en un Grid para poder poner la ventana emergente ENCIMA -->
+    <Grid>
+        
+        <!-- PANTALLA PRINCIPAL DEL CATÁLOGO -->
+        <Grid RowDefinitions="Auto, Auto, *" Padding="20,20,20,0" RowSpacing="15">
+            <!-- Encabezado -->
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label Text="¿Qué se te antoja hoy?" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource CatDark}" />
+                    <Label Text="Pide como gato, come como león 🍔" FontSize="14" TextColor="{StaticResource CatGray}" />
+                </VerticalStackLayout>
+                <HorizontalStackLayout Grid.Column="1" Spacing="5" VerticalOptions="Center">
+                    <Label Text="🛒" FontSize="24" />
+                    <Label x:Name="CartBadge" Text="0" FontAttributes="Bold" FontSize="18" TextColor="{StaticResource CatOrange}" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <!-- Buscador -->
+            <Border Grid.Row="1" StrokeShape="RoundRectangle 25" Stroke="#F0F0F0" StrokeThickness="2" BackgroundColor="#FAFAFA" Padding="15,0" HeightRequest="50">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Label Grid.Column="0" Text="🔍" VerticalOptions="Center" Margin="0,0,10,0"/>
+                    <Entry x:Name="SearchEntry" Grid.Column="1" Placeholder="Buscar antojos..." BackgroundColor="Transparent" TextColor="{StaticResource CatDark}" TextChanged="OnSearchTextChanged" VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Lista de Productos -->
+            <CollectionView Grid.Row="2" ItemsSource="{Binding Productos}" Margin="0,10,0,0">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="15" VerticalItemSpacing="15" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="White" Padding="10">
+                            <Border.Shadow><Shadow Brush="Black" Opacity="0.06" Offset="0,8" Radius="10" /></Border.Shadow>
+                            <Grid RowDefinitions="120, Auto, Auto, Auto" RowSpacing="5">
+                                <Border Grid.Row="0" StrokeShape="RoundRectangle 15" StrokeThickness="0" BackgroundColor="#F8F9FA">
+                                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="120" />
+                                </Border>
+                                <Label Grid.Row="1" Text="{Binding Nombre}" FontAttributes="Bold" FontSize="14" TextColor="{StaticResource CatDark}" MaxLines="2" LineBreakMode="TailTruncation" Margin="0,5,0,0"/>
+                                <Label Grid.Row="2" Text="{Binding Precio, StringFormat='${0:F2}'}" FontAttributes="Bold" FontSize="16" TextColor="{StaticResource CatOrange}" />
+                                <!-- Botón modificado para abrir el modal -->
+                                <Button Grid.Row="3" Text="Pedir" TextColor="White" FontAttributes="Bold" FontSize="13" HeightRequest="40" CornerRadius="20" Margin="0,5,0,0" Clicked="OnOpenModalClicked" CommandParameter="{Binding .}">
+                                    <Button.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#FF7B00" Offset="0.0" />
+                                            <GradientStop Color="#FF3300" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Button.Background>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- VENTANA EMERGENTE (MODAL) OCULTA POR DEFECTO -->
+        <Grid x:Name="ModalOverlay" BackgroundColor="#B3000000" IsVisible="False" InputTransparent="False">
+            <Border StrokeShape="RoundRectangle 30" StrokeThickness="0" BackgroundColor="White" Margin="30" Padding="25" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                <VerticalStackLayout Spacing="15">
+                    
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Label x:Name="ModalTitle" Text="Cargando..." FontSize="20" FontAttributes="Bold" TextColor="{StaticResource CatDark}" Grid.Column="0" VerticalOptions="Center"/>
+                        <Label Text="❌" FontSize="20" Grid.Column="1" VerticalOptions="Center">
+                            <Label.GestureRecognizers><TapGestureRecognizer Tapped="OnCloseModalTapped"/></Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                    
+                    <Label x:Name="ModalDesc" Text="..." TextColor="{StaticResource CatGray}" FontSize="14" />
+                    
+                    <!-- Selector de Restaurante -->
+                    <Label Text="¿De dónde lo pedimos?" FontAttributes="Bold" TextColor="{StaticResource CatDark}" Margin="0,10,0,0"/>
+                    <Border StrokeShape="RoundRectangle 15" Stroke="#F0F0F0" StrokeThickness="2" BackgroundColor="#FAFAFA" Padding="10,0" HeightRequest="50">
+                        <Picker x:Name="RestaurantePicker" ItemDisplayBinding="{Binding Nombre}" TitleColor="{StaticResource CatGray}" TextColor="{StaticResource CatDark}" Title="Selecciona un restaurante..." BackgroundColor="Transparent"/>
+                    </Border>
+
+                    <!-- Selector de Cantidad -->
+                    <Label Text="Cantidad:" FontAttributes="Bold" TextColor="{StaticResource CatDark}" Margin="0,10,0,0"/>
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20" Margin="0,0,0,15">
+                        <Button Text="-" FontSize="24" FontAttributes="Bold" BackgroundColor="#F0F0F0" TextColor="{StaticResource CatDark}" WidthRequest="50" HeightRequest="50" CornerRadius="25" Clicked="OnMinusClicked"/>
+                        <Label x:Name="ModalQty" Text="1" FontSize="24" FontAttributes="Bold" TextColor="{StaticResource CatOrange}" VerticalOptions="Center" />
+                        <Button Text="+" FontSize="24" FontAttributes="Bold" BackgroundColor="#F0F0F0" TextColor="{StaticResource CatDark}" WidthRequest="50" HeightRequest="50" CornerRadius="25" Clicked="OnPlusClicked"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Botón final de confirmar al carrito -->
+                    <Button x:Name="ModalConfirmBtn" Text="Agregar al carrito" TextColor="White" FontAttributes="Bold" FontSize="16" HeightRequest="55" CornerRadius="27" Clicked="OnConfirmAddClicked">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#FF7B00" Offset="0.0" />
+                                <GradientStop Color="#FF3300" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+        
+    </Grid>
+</ContentPage>

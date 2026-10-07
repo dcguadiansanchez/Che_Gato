@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Che_Gato.Views.HomePage"
+             BackgroundColor="#FFF9F2">
+
+    <ContentPage.Resources>
+        <Color x:Key="CatDark">#2C3E50</Color>
+        <Color x:Key="CatGray">#8395A7</Color>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,60,30,30" Spacing="30" VerticalOptions="Center" x:Name="MainContainer">
+
+            <!-- Ícono y Título -->
+            <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Label Text="🛵 🐱" FontSize="65" HorizontalOptions="Center" Margin="0,0,0,10" />
+                <Label Text="Che Gato" FontSize="40" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#FF5E00" />
+                <Label Text="Tu comida favorita y antojos, directo a tu puerta" FontSize="16" TextColor="{StaticResource CatGray}" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+
+            <!-- Tarjeta de Acciones -->
+            <Border StrokeShape="RoundRectangle 30" StrokeThickness="0" BackgroundColor="White" Padding="25,35" Margin="0,20,0,0">
+                <Border.Shadow>
+                    <Shadow Brush="#FF7B00" Opacity="0.15" Offset="0,15" Radius="25" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="20">
+                    
+                    <!-- Botón Principal: Comenzar -->
+                    <Button Text="🐾 Comenzar" 
+                            Clicked="OnComenzarClicked"
+                            TextColor="White" 
+                            FontAttributes="Bold" 
+                            FontSize="18"
+                            HeightRequest="60" 
+                            CornerRadius="30">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#FF7B00" Offset="0.0" />
+                                <GradientStop Color="#FF3300" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Shadow>
+                            <Shadow Brush="#FF3300" Opacity="0.4" Offset="0,8" Radius="15"/>
+                        </Button.Shadow>
+                    </Button>
+
+                    <!-- Botón Secundario: Probar Conexión -->
+                    <Button Text="Probar Conexión al Servidor" 
+                            Clicked="OnTestConnectionClicked"
+                            BackgroundColor="#FFF0E6" 
+                            TextColor="#FF5E00" 
+                            FontAttributes="Bold" 
+                            FontSize="15"
+                            HeightRequest="55" 
+                            CornerRadius="27" />
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

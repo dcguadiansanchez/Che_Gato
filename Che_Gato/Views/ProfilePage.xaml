@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Che_Gato.Views.ProfilePage"
+             BackgroundColor="#FFF9F2"
+             Title="Mi Perfil">
+
+    <ContentPage.Resources>
+        <Color x:Key="CatOrange">#FF7B00</Color>
+        <Color x:Key="CatDark">#2C3E50</Color>
+        <Color x:Key="CatGray">#8395A7</Color>
+    </ContentPage.Resources>
+
+    <ScrollView VerticalScrollBarVisibility="Never">
+        <VerticalStackLayout Padding="25" Spacing="20" HorizontalOptions="FillAndExpand" x:Name="ProfileContainer">
+            
+            <!-- Avatar Flotante (Ahora interactivo) -->
+            <Border StrokeShape="RoundRectangle 60" StrokeThickness="0" HeightRequest="120" WidthRequest="120" HorizontalOptions="Center" BackgroundColor="White" Margin="0,20,0,10">
+                <Border.Shadow>
+                    <Shadow Brush="#FF7B00" Opacity="0.15" Offset="0,10" Radius="20" />
+                </Border.Shadow>
+                <!-- Esto es lo que permite que el avatar detecte cuando lo tocas -->
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnChangeAvatarTapped" />
+                </Border.GestureRecognizers>
+                
+                <Image x:Name="AvatarImage" Aspect="AspectFit" Margin="20" />
+            </Border>
+
+            <!-- Datos Dinámicos del Usuario -->
+            <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                <Label x:Name="ProfileName" Text="Cargando..." FontSize="24" FontAttributes="Bold" TextColor="{StaticResource CatDark}" HorizontalOptions="Center" />
+                <Label x:Name="ProfileEmail" Text="correo@chegato.com" FontSize="14" TextColor="{StaticResource CatGray}" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- Tarjetas de Estadísticas -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="15" Margin="0,10,0,0">
+                <!-- Pedidos -->
+                <Border Grid.Column="0" StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="White" Padding="15">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.05" Offset="0,5" Radius="10" />
+                    </Border.Shadow>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                        <!-- Quitamos el "12" fijo y pusimos el OrdersLabel -->
+                        <Label x:Name="OrdersLabel" Text="0" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource CatOrange}" HorizontalOptions="Center" />
+                        <Label Text="Pedidos" FontSize="13" TextColor="{StaticResource CatGray}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                
+                <!-- Favoritos -->
+                <Border Grid.Column="1" StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="White" Padding="15">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Opacity="0.05" Offset="0,5" Radius="10" />
+                    </Border.Shadow>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="2">
+                        <!-- Quitamos el "5" fijo y pusimos el FavsLabel -->
+                        <Label x:Name="FavsLabel" Text="0" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource CatOrange}" HorizontalOptions="Center" />
+                        <Label Text="Favoritos" FontSize="13" TextColor="{StaticResource CatGray}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Dirección de Entrega Guardada -->
+            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" BackgroundColor="White" Padding="20" Margin="0,5,0,0">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Opacity="0.05" Offset="0,5" Radius="10" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Dirección de entrega" FontSize="15" FontAttributes="Bold" TextColor="{StaticResource CatDark}" />
+                    <Label Text="Calle Ronroneo #123, Colonia Bigotes, Guanajuato, GTO" FontSize="14" TextColor="{StaticResource CatGray}" LineBreakMode="WordWrap"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Botón de Cerrar Sesión -->
+            <Button Text="Cerrar Sesión" Clicked="OnLogoutClicked" TextColor="White" FontAttributes="Bold" FontSize="16" HeightRequest="55" CornerRadius="27" Margin="0,20,0,0">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#FF7B00" Offset="0.0" />
+                        <GradientStop Color="#FF3300" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Shadow>
+                    <Shadow Brush="#FF3300" Opacity="0.3" Offset="0,8" Radius="15"/>
+                </Button.Shadow>
+            </Button>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
